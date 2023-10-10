@@ -1,0 +1,50 @@
+ .headingMern{
+    font-family: 'Poppins', sans-serif;
+    
+ }
+.headerBg{
+   background-color: rgb(242, 237, 237);
+}
+ 
+.userNameHome {
+   font-family: 'Poppins', sans-serif;
+    color: #f27b7bfe;
+ }
+ 
+ /* styles.css */
+body,.bgImage {
+   background-image: url('../public/images/wallpaperflare.com_wallpaper\(19\).jpg');
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-attachment: fixed; /* Optional, to fix the background while scrolling */
+   background-position: center center;
+   margin: 0; /* Remove default margin to cover the entire viewport */
+   padding: 0; /* Remove default padding to cover the entire viewport */
+   font-family: Arial, sans-serif; /* Set a suitable font-family */
+   color: white; /* Set text color to be visible on the background */
+ }
+ 
+
+ .logoFontFamily{
+    font-family: 'Asul', sans-serif;
+    color: rgba(224, 171, 171, 0.918);
+ }
+
+ .userListFont{
+   font-family: 'Asul', sans-serif;
+   color: rgba(244, 75, 75, 0.918);
+}
+
+ .triangleFontFamily{
+    font-family: 'Major Mono Display', monospace;
+ }
+
+ 
+ .signupButton{
+   background-color: transparent;
+   
+ }
+
+ input[type='file']{
+   display: none
+ }
