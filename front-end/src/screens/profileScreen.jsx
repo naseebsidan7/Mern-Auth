@@ -1,7 +1,7 @@
   import React, { useState,useEffect } from 'react';
   import { LinkContainer } from 'react-router-bootstrap'; // Import LinkContainer
   import { useNavigate } from 'react-router-dom';
-  import { Form, Button ,Image } from 'react-bootstrap';
+  import { Form, Button ,Image,Col } from 'react-bootstrap';
   import FormContainer from '../components/FormContainer.jsx';
   import { useDispatch,useSelector } from 'react-redux';
   
@@ -9,27 +9,30 @@
   import { toast } from 'react-toastify'
   import { useUpdateUserMutation } from '../slices/userApiSlice.js';
   import Loader from '../components/Loader.jsx';
-  // import convertToBase64 from '../helper/conver.js'
-
+ 
+  import Noprofile from '../../public/images/Make Your Day.jpeg'
 
     const ProfileScreen = () => {
       const [name, setName] = useState('');
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [confirmPassword, setConfirmPassword] = useState('');
-      const [file, setFile] = useState(null);
+      const [image, setImage] = useState('')
+      
 
+    
       const avatar = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
       const navigate = useNavigate()
       const dispatch = useDispatch()
       
       const [updateProfile,{isLoading}] = useUpdateUserMutation();
       const { userInfo } = useSelector((state)=>state.auth)
-      
+      const imageUrl = `http://localhost:3000/images/${userInfo.image}`;
+
       useEffect(()=>{
         setName(userInfo.name)
         setEmail(userInfo.email)
-        
+        console.log(userInfo.image)
       },[userInfo.setName,userInfo.setEmail]);
 
       const submitHandler = async (e) => {
@@ -39,40 +42,23 @@
           if(password !== confirmPassword){
               toast.error('Password do not Match')
           }else{
-              try {
-                  const res = await updateProfile({
-                    _id:userInfo._id,
-                    name,
-                    email,
-                    password,  
-                    file,
-                  }).unwrap();
-                  
-                  
-                  if(res){
-                    dispatch(setCredentials({...res}))
-                    toast.success("Profile Updated")
-                 
-                  }else{
-                    toast.error("Registration Failed")
-                  }
+            try {
+              const formData = new FormData();
+              formData.append('_id', userInfo._id);
+              formData.append('name', name);
+              formData.append('email', email);
+              formData.append('password', password);
+              formData.append('file', image);
+      
+              const res = await updateProfile(formData).unwrap();
+      
+              dispatch(setCredentials(res));
+              toast.success("Profile updated successfully");
               } catch (err) {
                       toast.error(err?.data?.message || err.error)
               }
           }
       
-      };
-
-            // Modify the changeImage function to handle file input change
-      const changeImage = async (e) => {
-        const imageFile = e.target.files[0];
-
-        // Display the selected image
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          setFile(event.target.result);
-        };
-        reader.readAsDataURL(imageFile);
       };
  
 
@@ -83,13 +69,28 @@
           <Form onSubmit={submitHandler} encType="multipart/form-data">
 
 
-          <div className="flex justify-content-center item-center" style={{ justifyContent: 'center', display: 'flex' }}>
+          {/* <div className="flex justify-content-center item-center" style={{ justifyContent: 'center', display: 'flex' }}>
           <label htmlFor="profile">
             <Image src={file || avatar} style={{ height: '180px', width: '185px' }} alt="Profile" roundedCircle />
           </label>
           <input onChange={(e) => changeImage(e)} type="file" name="profileImage" id="profile" accept=".jpeg, .png, .jpg" />
 
-        </div>
+        </div> */}
+
+        {
+            userInfo? (
+        <div className="flex justify-content-center item-center" style={{ justifyContent: 'center', display: 'flex' }}>
+          <label htmlFor="profile">
+            <Image src={userInfo.image?`http://localhost:8000/images/${userInfo.image}` : Noprofile} style={{ height: '180px', width: '185px' }} alt="Profile" roundedCircle />
+          </label>
+        </div> 
+        ):(
+              null
+       )
+      }
+
+      
+
 
             <Form.Group className="my-2" controlId="name">
               <Form.Label>Full Name</Form.Label>
@@ -131,6 +132,18 @@
               />
             </Form.Group>
           
+         {/* Profile Picture input  */}
+
+            <Form.Group className="my-2" controlId="image" style={{display:'none'}}>
+            <Form.Label>Profile Picture</Form.Label>
+            <Form.Control
+              type="file"
+              id="profile"
+              accept=".jpeg, .png, .jpg"
+              onChange={(e) => setImage(e.target.files[0])}
+             
+            ></Form.Control>
+          </Form.Group>
     
                 { isLoading && <Loader/> }
             <Button type="submit" variant="primary" className=" my-4">

@@ -101,33 +101,31 @@ const getUserProfile = expressAsyncHandler(async(req,res)=>{
     const updateUserProfile  = expressAsyncHandler(async(req,res)=>{
         
         const user = await User.findById(req.user._id);
-        if(user){
-
+        if (user) {
             user.name = req.body.name || user.name;
             user.email = req.body.email || user.email;
-            console.log(req.file +"req file =========================");
-            if (req.file) {
-             
-                user.profile = req.file.buffer; 
+        
+            if(req.file){
+              user.imagePath = req.file.filename || user.imagePath;
+             }
+        
+            if (req.body.password) {
+              user.password = req.body.password;
             }
         
-            if(req.body.password){
-                user.password = req.body.password;
-            }
-            const updatedData = await user.save();
-            res.status(200).json({
-                _id: updatedData._id,
-                name: updatedData.name,
-                email: updatedData.email,
-            
-            })  
-
-        }else{
-            res.status(404)
-            throw new Error('User not Found ')
-        }
-        res.status(200).json({message:'Update User Profile'})
-    })
+            const updatedUser = await user.save();
+        
+            res.json({
+              _id: updatedUser._id,
+              name: updatedUser.name,
+              email: updatedUser.email,
+              image: updatedUser.imagePath
+            });
+          } else {
+            res.status(404);
+            throw new Error('User not found');
+          }
+        });
 
 
 export {

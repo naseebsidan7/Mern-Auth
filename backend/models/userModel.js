@@ -15,10 +15,10 @@ const userSchema = mongoose.Schema({
         type:String,
         required:true,
     },
-    profile: {
-        type: Buffer, // Store binary data
-        default: null // You can set a default value if needed
-    }
+    imagePath:{
+        type:String,
+        default:''  
+      }
 
 },{
     timestamps:true

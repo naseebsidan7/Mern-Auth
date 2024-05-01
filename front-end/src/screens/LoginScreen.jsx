@@ -67,6 +67,9 @@ const LoginScreen = () => {
         <Button type="submit" variant="secondary" className="mg-3 my-4">
           Sign In
         </Button>
+        <Button onClick={()=>window.setTimeout(()=>window.alert('after 3 secs'),3000)} variant="danger" className="mg-3 my-4 mx-3">
+          reset
+        </Button>
 
         <Row className="py-3">
           <Col> 
