@@ -9,7 +9,7 @@ import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // User
-import HomeScreen from './screens/homeScreen.jsx'
+import HomeScreen from './screens/HomeScreen.jsx'
 import LoginScreen from './screens/LoginScreen.jsx'
 import RegisterScreen from './screens/RegisterScreen.jsx'
 import ProfileScreen from './screens/profileScreen.jsx'

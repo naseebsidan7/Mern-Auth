@@ -1,9 +1,9 @@
 import React from 'react'
 import HeroSection from '../components/Hero'
-const homeScreen = () => {
+const HomeScreen = () => {
   return (
   <HeroSection/>
   )
 }
 
-export default homeScreen
+export default HomeScreen
